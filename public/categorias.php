@@ -45,7 +45,7 @@ $activeSubKey = $sub ? sub_key($sub) : null;
       <!-- Header del sidebar -->
       <div class="flex items-center h-16 px-4 border-b border-gray-100">
         <div class="flex items-center gap-2 overflow-hidden">
-          <div class="h-8 w-8 rounded-xl bg-gray-900"></div>
+        <img src="assets/sirio-logo.png" alt="Logo Sirio" class="h-8 w-auto">
           <span
             class="font-semibold truncate transition-all duration-300 origin-left
                    group-data-[collapsed=true]/sidebar:opacity-0 group-data-[collapsed=true]/sidebar:scale-x-0 group-data-[collapsed=true]/sidebar:w-0">
@@ -138,7 +138,7 @@ $activeSubKey = $sub ? sub_key($sub) : null;
 
           <!-- Bodegas -->
           <li>
-            <a href="#" data-key="Bodegas"
+            <a href="bodegas.php" data-key="bodegas"
                class="group flex items-center rounded-xl px-3 py-2 text-sm font-medium hover:bg-gray-100 transition-colors
                       data-[active=true]:bg-gray-900 data-[active=true]:text-white"
                title="Bodegas">
@@ -159,7 +159,7 @@ $activeSubKey = $sub ? sub_key($sub) : null;
 
           <!-- Inventario -->
           <li>
-            <a href="#" data-key="Inventario"
+            <a href="inventario.php" data-key="inventario"
                class="group flex items-center rounded-xl px-3 py-2 text-sm font-medium hover:bg-gray-100 transition-colors
                       data-[active=true]:bg-gray-900 data-[active=true]:text-white"
                title="Inventario">
