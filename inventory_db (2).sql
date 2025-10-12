@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 17-09-2025 a las 21:32:47
+-- Tiempo de generación: 25-09-2025 a las 09:20:37
 -- Versión del servidor: 10.6.22-MariaDB-0ubuntu0.22.04.1
 -- Versión de PHP: 8.1.2-1ubuntu2.22
 
@@ -39,6 +39,14 @@ CREATE TABLE `bodegas` (
   `actualizado_en` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `bodegas`
+--
+
+INSERT INTO `bodegas` (`id_bodega`, `codigo`, `nombre`, `direccion1`, `ciudad`, `pais`, `activa`, `creado_en`, `actualizado_en`) VALUES
+(1, '0001', 'Bodega A', 'San Salvador', 'San Salvador', 'El Salvador', 1, '2025-09-25 02:43:10', '2025-09-25 02:43:10'),
+(3, 'Prueba1', 'Prueba3', 'Prueba2', 'Prueba4', 'Prueba5', 1, '2025-09-25 02:44:12', '2025-09-25 02:44:12');
+
 -- --------------------------------------------------------
 
 --
@@ -61,7 +69,8 @@ CREATE TABLE `categorias` (
 INSERT INTO `categorias` (`id_categoria`, `nombre`, `descripcion`, `activa`, `creada_en`, `actualizada_en`) VALUES
 (1, 'Camisas', 'Aquí debe ir la descripción de las camisas', 1, '2025-09-16 03:10:43', '2025-09-16 03:10:43'),
 (2, 'Pantalones', 'Aqui debe de ir la descripción de los pantalones', 1, '2025-09-16 03:31:43', '2025-09-16 03:31:48'),
-(4, 'Shorts', 'Aquí va la descripción de los shorts', 0, '2025-09-16 04:06:59', '2025-09-16 04:06:59');
+(4, 'Shorts', 'Aquí va la descripción de los shorts', 0, '2025-09-16 04:06:59', '2025-09-16 04:06:59'),
+(6, 'Sudaderas', 'Aqui va la descripción', 1, '2025-09-21 17:07:27', '2025-09-21 17:09:46');
 
 -- --------------------------------------------------------
 
@@ -71,10 +80,18 @@ INSERT INTO `categorias` (`id_categoria`, `nombre`, `descripcion`, `activa`, `cr
 
 CREATE TABLE `colores` (
   `id_color` bigint(20) UNSIGNED NOT NULL,
-  `codigo` varchar(16) NOT NULL,
   `nombre` varchar(60) NOT NULL,
   `hex` char(7) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `colores`
+--
+
+INSERT INTO `colores` (`id_color`, `nombre`, `hex`) VALUES
+(1, 'Negro', '#000000'),
+(3, 'Blanco', '#ffffff'),
+(4, 'Aqua', '#1eddce');
 
 -- --------------------------------------------------------
 
@@ -91,6 +108,14 @@ CREATE TABLE `existencias` (
   `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
   `actualizado_en` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `existencias`
+--
+
+INSERT INTO `existencias` (`id_existencia`, `id_bodega`, `id_producto`, `cantidad`, `stock_minimo`, `creado_en`, `actualizado_en`) VALUES
+(1, 1, 1, '10.000', '0.000', '2025-09-25 04:18:06', '2025-09-25 13:55:24'),
+(2, 3, 1, '80.000', '0.000', '2025-09-25 04:18:31', '2025-09-25 04:18:31');
 
 -- --------------------------------------------------------
 
@@ -109,6 +134,16 @@ CREATE TABLE `movimientos_inventario` (
   `fecha_evento` datetime NOT NULL,
   `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `movimientos_inventario`
+--
+
+INSERT INTO `movimientos_inventario` (`id_movimiento`, `id_bodega`, `id_producto`, `tipo`, `cantidad`, `costo_unitario`, `motivo`, `fecha_evento`, `creado_en`) VALUES
+(1, 1, 1, 'IN', '30.000', '5.0000', 'Dan ganas', '2025-09-24 22:17:00', '2025-09-25 04:18:06'),
+(2, 3, 1, 'IN', '80.000', '5.0000', 'Dan ganas', '2025-09-24 22:18:00', '2025-09-25 04:18:31'),
+(3, 1, 1, 'AJUSTE', '10.000', '5.0000', NULL, '2025-09-25 07:55:00', '2025-09-25 13:55:08'),
+(4, 1, 1, 'OUT', '30.000', '5.0000', NULL, '2025-09-25 07:55:00', '2025-09-25 13:55:24');
 
 --
 -- Disparadores `movimientos_inventario`
@@ -182,7 +217,7 @@ CREATE TABLE `productos` (
   `id_producto` bigint(20) UNSIGNED NOT NULL,
   `id_categoria` bigint(20) UNSIGNED NOT NULL,
   `id_subcategoria` bigint(20) UNSIGNED NOT NULL,
-  `id_unidad` bigint(20) UNSIGNED NOT NULL,
+  `unidades` int(11) NOT NULL DEFAULT 0,
   `id_talla` bigint(20) UNSIGNED DEFAULT NULL,
   `id_color` bigint(20) UNSIGNED DEFAULT NULL,
   `sku` varchar(40) NOT NULL,
@@ -193,6 +228,13 @@ CREATE TABLE `productos` (
   `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
   `actualizado_en` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id_producto`, `id_categoria`, `id_subcategoria`, `unidades`, `id_talla`, `id_color`, `sku`, `nombre`, `descripcion`, `costo_base`, `activo`, `creado_en`, `actualizado_en`) VALUES
+(1, 1, 1, 100, 2, 3, '00001', 'Camisa', 'Aqui va la descripción', '5.00', 1, '2025-09-25 04:16:06', '2025-09-25 04:16:06');
 
 -- --------------------------------------------------------
 
@@ -227,9 +269,20 @@ INSERT INTO `subcategorias` (`id_subcategoria`, `id_categoria`, `nombre`, `descr
 CREATE TABLE `tallas` (
   `id_talla` bigint(20) UNSIGNED NOT NULL,
   `codigo` varchar(16) NOT NULL,
-  `nombre` varchar(60) NOT NULL,
-  `orden` int(11) NOT NULL DEFAULT 0
+  `nombre` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `tallas`
+--
+
+INSERT INTO `tallas` (`id_talla`, `codigo`, `nombre`) VALUES
+(1, '0001', 'X'),
+(2, '0002', 'S'),
+(3, '0003', 'M'),
+(4, '0004', 'L'),
+(5, '0005', 'XS'),
+(6, '0006', 'XL');
 
 -- --------------------------------------------------------
 
@@ -288,8 +341,7 @@ ALTER TABLE `categorias`
 -- Indices de la tabla `colores`
 --
 ALTER TABLE `colores`
-  ADD PRIMARY KEY (`id_color`),
-  ADD UNIQUE KEY `codigo` (`codigo`);
+  ADD PRIMARY KEY (`id_color`);
 
 --
 -- Indices de la tabla `existencias`
@@ -330,7 +382,6 @@ ALTER TABLE `productos`
   ADD UNIQUE KEY `uq_producto_sku` (`sku`),
   ADD KEY `fk_prod_categoria` (`id_categoria`),
   ADD KEY `fk_prod_subcategoria` (`id_subcategoria`),
-  ADD KEY `fk_prod_unidad` (`id_unidad`),
   ADD KEY `fk_prod_talla` (`id_talla`),
   ADD KEY `fk_prod_color` (`id_color`);
 
@@ -371,31 +422,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `bodegas`
 --
 ALTER TABLE `bodegas`
-  MODIFY `id_bodega` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_bodega` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id_categoria` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_categoria` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `colores`
 --
 ALTER TABLE `colores`
-  MODIFY `id_color` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_color` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `existencias`
 --
 ALTER TABLE `existencias`
-  MODIFY `id_existencia` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_existencia` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos_inventario`
 --
 ALTER TABLE `movimientos_inventario`
-  MODIFY `id_movimiento` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_movimiento` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `password_resets`
@@ -413,7 +464,7 @@ ALTER TABLE `precios_producto`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id_producto` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_producto` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `subcategorias`
@@ -425,7 +476,7 @@ ALTER TABLE `subcategorias`
 -- AUTO_INCREMENT de la tabla `tallas`
 --
 ALTER TABLE `tallas`
-  MODIFY `id_talla` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_talla` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `unidades`
@@ -476,8 +527,7 @@ ALTER TABLE `productos`
   ADD CONSTRAINT `fk_prod_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_prod_color` FOREIGN KEY (`id_color`) REFERENCES `colores` (`id_color`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_prod_subcategoria` FOREIGN KEY (`id_subcategoria`) REFERENCES `subcategorias` (`id_subcategoria`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_prod_talla` FOREIGN KEY (`id_talla`) REFERENCES `tallas` (`id_talla`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_prod_unidad` FOREIGN KEY (`id_unidad`) REFERENCES `unidades` (`id_unidad`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_prod_talla` FOREIGN KEY (`id_talla`) REFERENCES `tallas` (`id_talla`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `subcategorias`
